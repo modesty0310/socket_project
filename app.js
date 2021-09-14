@@ -8,6 +8,19 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+app.io = require('socket.io')();
+
+app.io.on('connection', socket => {
+  console.log('socket connet');
+
+  socket.on('disconnect', () => {
+    console.log('socket disconnected');
+  });
+
+  socket.on('chat-msg-1', (msg) => {
+    app.io.emit('chat-msg-2', msg);
+  });
+});
 
 
 // view engine setup
